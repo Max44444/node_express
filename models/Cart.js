@@ -38,7 +38,7 @@ class Cart {
     const course = cart.courses[idx];
 
     if (course.count === 1) {
-      cart.courses.filter(c => c.id !== id);
+      cart.courses = cart.courses.filter(c => c.id !== id);
     } else {
       cart.courses[idx].count--;
     }
