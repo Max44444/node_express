@@ -10,15 +10,21 @@
       {{/if}}
 
       {{#if isCourses}}
-        <li class="active"><a href="/">Courses</a></li>
+        <li class="active"><a href="/courses">Courses</a></li>
       {{else}}
         <li><a href="/courses">Courses</a></li>
       {{/if}}
 
       {{#if isAdd}}
-        <li class="active"><a href="/">Add</a></li>
+        <li class="active"><a href="/add">Add</a></li>
       {{else}}
         <li><a href="/add">Add</a></li>
+      {{/if}}
+      
+      {{#if isCart}}
+        <li class="active"><a href="/cart">Cart</a></li>
+      {{else}}
+        <li><a href="/cart">Cart</a></li>
       {{/if}}
       
     </ul>
