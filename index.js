@@ -30,7 +30,7 @@ const PORT = process.env.port || 3000;
 
 async function start() {
   try {
-    const url = 'mongodb+srv://maxim:cnfYcTvCKuIq692T@cluster0.zp2oe.mongodb.net/<dbname>?retryWrites=true&w=majority';
+    const url = 'mongodb+srv://maxim:cnfYcTvCKuIq692T@cluster0.zp2oe.mongodb.net/shop';
     await mongoose.connect(url, { 
       useNewUrlParser: true,
       useUnifiedTopology: true
