@@ -6,6 +6,7 @@ const homeRoutes = require('./routes/home.routes');
 const coursesRoutes = require('./routes/courses.routes');
 const addRoutes = require('./routes/add.routes');
 const cartRoutes = require('./routes/cart.routes');
+const User = require('./models/User');
 
 const app = express();
 
@@ -21,6 +22,16 @@ const hbs = exphbs.create({
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', 'views');
+
+app.use( async (req, res, next) => {
+  try {
+    const user = await User.findById('600abb12de34f5544f317107');
+    req.user = user;
+    next();
+  } catch (error) {
+    console.log(error);
+  }
+})
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
@@ -40,6 +51,17 @@ async function start() {
       useUnifiedTopology: true,
       useFindAndModify: false
     });
+
+    const candidate = await User.findOne();
+    if (!candidate) {
+      const user = new User({
+        email: 'Maxim@gmail.com',
+        name: 'Maxim',
+        cart: { items: [] }
+      });
+      await user.save()
+    }
+
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     })
