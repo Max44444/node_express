@@ -15,30 +15,36 @@
         <li><a href="/courses">Courses</a></li>
       {{/if}}
 
-      {{#if isAdd}}
-        <li class="active"><a href="/add">Add</a></li>
+      {{#if isAuth}}
+
+        {{#if isAdd}}
+          <li class="active"><a href="/add">Add</a></li>
+        {{else}}
+          <li><a href="/add">Add</a></li>
+        {{/if}}
+        
+        {{#if isCart}}
+          <li class="active"><a href="/cart">Cart</a></li>
+        {{else}}
+          <li><a href="/cart">Cart</a></li>
+        {{/if}}
+        
+        {{#if isOrders}}
+          <li class="active"><a href="/orders">Orders</a></li>
+        {{else}}
+          <li><a href="/orders">Orders</a></li>
+        {{/if}}
+
+        <li><a href="/auth/logout">Exit</a></li>
       {{else}}
-        <li><a href="/add">Add</a></li>
+
+        {{#if isLogin}}
+          <li class="active"><a href="/auth/login#login">Sign in</a></li>
+        {{else}}
+          <li><a href="/auth/login#login">Sign in</a></li>
+        {{/if}}
+
       {{/if}}
-      
-      {{#if isCart}}
-        <li class="active"><a href="/cart">Cart</a></li>
-      {{else}}
-        <li><a href="/cart">Cart</a></li>
-      {{/if}}
-      
-      {{#if isOrders}}
-        <li class="active"><a href="/orders">Orders</a></li>
-      {{else}}
-        <li><a href="/orders">Orders</a></li>
-      {{/if}}
-      
-      {{#if isLogin}}
-        <li class="active"><a href="/auth/login#login">Sign in</a></li>
-      {{else}}
-        <li><a href="/auth/login#login">Sign in</a></li>
-      {{/if}}
-      
     </ul>
   </div>
 </nav>
