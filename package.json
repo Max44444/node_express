@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/Max44444/node_express#readme",
   "dependencies": {
+    "connect-mongodb-session": "^2.4.1",
     "express": "^4.17.1",
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
