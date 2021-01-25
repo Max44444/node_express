@@ -25,7 +25,7 @@ if ($cart) {
   $cart.addEventListener('click', event => {
     if (event.target.classList.contains('js-remove')) {
       const id = event.target.dataset.id;
-      const csrf = event.target.dataset.csrf
+      const csrf = event.target.dataset.csrf;
 
       fetch(`/cart/remove/${id}`, {
         method: 'delete',
@@ -40,7 +40,7 @@ if ($cart) {
                   <td>${title}</td>
                   <td>${count}</td>
                   <td>
-                    <button class="btn btn-small js-remove" data-id="${id}">Delete</button>
+                    <button class="btn btn-small js-remove" data-id="${id}" data-csrf="${csrf}">Delete</button>
                   </td>
                 </tr>
               `).join(' ');
