@@ -87,7 +87,33 @@ router.get('/reset', async (req, res) => {
   })
 })
 
-router.post('reset', (req, res) => {
+router.get('/reset/password/:token', async (req, res) => {
+  if (!req.params.token) {
+    return res.redirect('/auth/login');
+  }
+
+  try {
+    const user = await User.findOne({
+      resetToken: req.params.token,
+      resetTokenExp: { $gt: Date.now() }
+    })
+
+    if (!user) {
+      return res.redirect('/auth/login');
+    } else {
+      res.render('auth/password', {
+        title: 'Restore access',
+        error: await req.consumeFlash('error'),
+        userId: user._id.toString(),
+        token: req.params.token
+      })
+    }
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+router.post('/reset', (req, res) => {
   try {
     crypto.randomBytes(32, async (err, buffer) => {
       if (err) {
