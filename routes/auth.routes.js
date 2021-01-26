@@ -1,11 +1,13 @@
 const { Router } = require('express');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const nodeMailer = require('nodemailer');
 const sendgrid = require('nodemailer-sendgrid-transport');
 const User = require('../models/User');
 const keys = require('../keys');
 const regEmail = require('../emails/registration');
 const router = Router();
+const resetEmail = require('../emails/reset');
 
 const transporter = nodeMailer.createTransport(sendgrid({
   auth: { api_key: keys.SENDGRID_API_KEY }
@@ -73,6 +75,41 @@ router.post('/register', async (req, res) => {
       await transporter.sendMail(regEmail(email));
       res.redirect('/auth/login#login');
     }
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+router.get('/reset', async (req, res) => {
+  res.render('auth/reset', {
+    title: 'Forgot the password?',
+    error: await req.consumeFlash('error')
+  })
+})
+
+router.post('reset', (req, res) => {
+  try {
+    crypto.randomBytes(32, async (err, buffer) => {
+      if (err) {
+        await req.flash('error', 'Something goes wrong, please try again later');
+        return res.redirect('/auth/reset');
+      }
+
+      const token = buffer.toString('hex');
+
+      const candidate = await User.findOne({ email: req.body.email });
+
+      if (candidate) {
+        candidate.resetToken = token;
+        candidate.resetTokenExp = Date.now() + 3600000;
+        await candidate.save();
+        await transporter.sendMail(resetEmail(candidate.email, token));
+        res.redirect('/auth/login');
+      } else {
+        req.flash('error', 'There is no such email');
+        res.redirect('/auth/reset');
+      }
+    })
   } catch (error) {
     console.log(error);
   }
