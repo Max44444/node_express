@@ -87,7 +87,7 @@ router.get('/reset', async (req, res) => {
   })
 })
 
-router.get('/reset/password/:token', async (req, res) => {
+router.get('/password/:token', async (req, res) => {
   if (!req.params.token) {
     return res.redirect('/auth/login');
   }
@@ -138,6 +138,29 @@ router.post('/reset', (req, res) => {
     })
   } catch (error) {
     console.log(error);
+  }
+})
+
+router.post('/password', async (req, res) => {
+  try {
+    const user = await User.findOne({
+      _id: req.body.userId,
+      resetToken: req.body.token,
+      resetTokenExp: { $gt: Date.now() }
+    })
+
+    if (user) {
+      user.password = await bcrypt.hash(req.body.password, 10);
+      user.resetToken = undefined;
+      user.resetTokenExp = undefined;
+      await user.save();
+      res.redirect('/auth/login');
+    } else {
+      req.flash('loginError', 'Еoken expired');
+      res.redirect('/auth/login');
+    }
+  } catch (error) {
+    console.log(error); 
   }
 })
 
