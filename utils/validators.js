@@ -31,3 +31,23 @@ exports.registerValidators = [
     .isLength({ min: 3 })
     .trim()
 ]
+
+exports.loginValidators = [
+  body('email', 'Enter correct email')
+    .isEmail()
+    .normalizeEmail(),
+  body('password', 'Password shoud be min 6 signs')
+    .isLength({ min: 6, max: 56 })
+    .isAlphanumeric()
+    .trim()
+]
+
+exports.courseValidators = [
+  body('title', 'Min title length 3 signs')
+    .isLength({ min: 3 })
+    .trim(),
+  body('price', 'Enter correct price')
+    .isNumeric(),
+  body('img', 'Enter correct img url')
+    .isURL()
+]
